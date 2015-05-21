@@ -130,27 +130,20 @@ class AmazonProduct extends AmazonProductsCore{
                 $anum++;
             }
         }
-        
+
         //Relationships
         if ($xml->Relationships){
-            foreach($xml->Relationships->children() as $x){
-                foreach($x->children() as $y){
-                    foreach($y->children() as $z){
-                        foreach($z->children() as $zzz){
-                            $this->data['Relationships'][$x->getName()][$y->getName()][$z->getName()][$zzz->getName()] = (string)$zzz;
-                        }
-                    }
+            // When there are variations (VariationChild) nodes
+            foreach($xml->Relationships->children('ns2', true) as $variation){
+                $variations = (array) $variation;
+                foreach($variation->children() as $identifier) {
+                    $this->data['Relationships'][] = array_merge($variations, (array) $identifier->MarketplaceASIN);
                 }
             }
-            //child relations use namespace but parent does not
-            foreach($xml->Relationships->children('ns2',true) as $x){
-                foreach($x->children() as $y){
-                    foreach($y->children() as $z){
-                        foreach($z->children() as $zzz){
-                            $this->data['Relationships'][$x->getName()][$y->getName()][$z->getName()][$zzz->getName()] = (string)$zzz;
-                        }
-                    }
-                }
+
+            // when there isn't any VariationChild node, but there are identifiers
+            foreach ($xml->Relationships->children() as $identifier) {
+                $this->data['Relationships'][] = (array) $identifier->Identifiers->MarketplaceASIN;
             }
         }
         
@@ -194,14 +187,12 @@ class AmazonProduct extends AmazonProductsCore{
                 }
             }
         }
-            
-        
+
+
         //SalesRankings
         if ($xml->SalesRankings){
-            foreach($xml->SalesRankings->children() as $x){
-                foreach($x->children() as $y){
-                    $this->data['SalesRankings'][$x->getName()][$y->getName()] = (string)$y;
-                }
+            foreach($xml->SalesRankings->children() as $child){
+                $this->data['SalesRankings'][] = (array) $child;
             }
         }
         

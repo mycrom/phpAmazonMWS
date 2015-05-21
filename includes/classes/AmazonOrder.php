@@ -181,7 +181,7 @@ class AmazonOrder extends AmazonOrderCore{
             $d['ShippingAddress']['District'] = (string)$xml->ShippingAddress->District;
             $d['ShippingAddress']['StateOrRegion'] = (string)$xml->ShippingAddress->StateOrRegion;
             $d['ShippingAddress']['PostalCode'] = (string)$xml->ShippingAddress->PostalCode;
-            $d['ShippingAddress']['CountryCode'] = (string)$xml->ShippingAddress->CountryCode;
+            $d['ShippingAddress']['CountryCode'] = (string)(!empty($xml->ShippingAddress->CountryCode) ? $xml->ShippingAddress->CountryCode : $xml->ShippingAddress->Country);
             $d['ShippingAddress']['Phone'] = (string)$xml->ShippingAddress->Phone;
         }
         if (isset($xml->OrderTotal)){
