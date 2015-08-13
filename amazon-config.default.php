@@ -24,7 +24,7 @@ $store['YourAmazonStore']['secretKey'] = ''; //Secret Access Key for this store
 $store['YourAmazonStore']['serviceUrl'] = ''; //optional override for Service URL
 
 //Service URL Base
-//Current setting is United States
+//Current setting is United States - PLEASE INCLUDE THE BACKSLASH IN THE END OF THE URL
 $AMAZON_SERVICE_URL = 'https://mws.amazonservices.com/';
 
 //Location of log file to use
