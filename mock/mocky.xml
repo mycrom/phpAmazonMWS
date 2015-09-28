@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ListMarketplaceParticipationsResponse
-xmlns="https://mws.amazonservices.com/Sellers/2011-07-01">
+        xmlns="https://mws.amazonservices.com/Sellers/2011-07-01">
     <ListMarketplaceParticipationsResult>
         <NextToken>MRgZW55IGNhcm5hbCBwbGVhc3VyZS6=</NextToken>
         <ListParticipations>

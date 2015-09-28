@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <ListAllFulfillmentOrdersResponse
-xmlns="http://mws.amazonaws.com/FulfillmentOutboundShipment/2010-10-01/">
+        xmlns="http://mws.amazonaws.com/FulfillmentOutboundShipment/2010-10-01/">
     <ListAllFulfillmentOrdersResult>
         <NextToken>H4sIAAAAAAAAAC2MwQqDMBBEfyXsPXU3ITUEEyjFQ6FWUNt7sbEI
-        alH7/3SVwjLLG3iTzeLjoe6n9xAv3ziWyysuIFoPCjGVqCWmDaZOWYckkRNB9B4MgZj
-        4MY0euuewRhBxswhZkaQbUk5pZ+iA1nK1m+u+ayXxlmnwyCXffzdkXTiXt/pe5FWWdB
-        tWeVE+Ttedkjn8AF4nvJquAAAA</NextToken>
+            alH7/3SVwjLLG3iTzeLjoe6n9xAv3ziWyysuIFoPCjGVqCWmDaZOWYckkRNB9B4MgZj
+            4MY0euuewRhBxswhZkaQbUk5pZ+iA1nK1m+u+ayXxlmnwyCXffzdkXTiXt/pe5FWWdB
+            tWeVE+Ttedkjn8AF4nvJquAAAA
+        </NextToken>
         <FulfillmentOrders>
             <member>
                 <ShippingSpeedCategory>Standard</ShippingSpeedCategory>

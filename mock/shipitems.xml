@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ListInboundShipmentItemsResponse
-xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+        xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
     <ListInboundShipmentItemsResult>
         <ItemData>
             <member>

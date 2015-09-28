@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <GetFulfillmentPreviewResponse
-xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
+        xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
     <GetFulfillmentPreviewResult>
         <FulfillmentPreviews>
             <member>
@@ -21,7 +21,7 @@ xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
                                 </EstimatedShippingWeight>
                                 <SellerSKU>SampleSKU1</SellerSKU>
                                 <SellerFulfillmentOrderItemId>
-                                mws-test-query-20100713023406723-2
+                                    mws-test-query-20100713023406723-2
                                 </SellerFulfillmentOrderItemId>
                                 <ShippingWeightCalculationMethod>Package
                                 </ShippingWeightCalculationMethod>
@@ -34,7 +34,7 @@ xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
                                 </EstimatedShippingWeight>
                                 <SellerSKU>SampleSKU2</SellerSKU>
                                 <SellerFulfillmentOrderItemId>
-                                mws-test-query-20100713023406723-1
+                                    mws-test-query-20100713023406723-1
                                 </SellerFulfillmentOrderItemId>
                                 <ShippingWeightCalculationMethod>Package
                                 </ShippingWeightCalculationMethod>
@@ -90,7 +90,7 @@ xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
                                 </EstimatedShippingWeight>
                                 <SellerSKU>SampleSKU1</SellerSKU>
                                 <SellerFulfillmentOrderItemId>
-                                mws-test-query-20100713023406723-2
+                                    mws-test-query-20100713023406723-2
                                 </SellerFulfillmentOrderItemId>
                                 <ShippingWeightCalculationMethod>Package
                                 </ShippingWeightCalculationMethod>
@@ -103,7 +103,7 @@ xmlns="http://mws.amazonaws.com/FulfillmentInboundShipment/2010-10-01/">
                                 </EstimatedShippingWeight>
                                 <SellerSKU>SampleSKU2</SellerSKU>
                                 <SellerFulfillmentOrderItemId>
-                                mws-test-query-20100713023406723-1
+                                    mws-test-query-20100713023406723-1
                                 </SellerFulfillmentOrderItemId>
                                 <ShippingWeightCalculationMethod>Package
                                 </ShippingWeightCalculationMethod>
