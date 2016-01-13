@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // classes
-use CPIGroup\Inventory\AmazonInventoryList;
+use AmazonMWS\Inventory\AmazonInventoryList;
 
 /*
  * This script retrieves a list of recently changed item supply info for the store "myStore" and display some of it.

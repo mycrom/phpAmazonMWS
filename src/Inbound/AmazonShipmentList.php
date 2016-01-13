@@ -1,5 +1,5 @@
 <?php
-namespace CPIGroup\Inbound;
+namespace AmazonMWS\Inbound;
     /**
      * Copyright 2013 CPI Group, LLC
      *

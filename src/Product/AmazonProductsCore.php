@@ -1,5 +1,5 @@
 <?php
-namespace CPIGroup\Product;
+namespace AmazonMWS\Product;
 /**
  * Copyright 2013 CPI Group, LLC
  *
@@ -16,7 +16,7 @@ namespace CPIGroup\Product;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-use CPIGroup\AmazonCore;
+use AmazonMWS\AmazonCore;
 
 /**
  * Core class for Amazon Products API.

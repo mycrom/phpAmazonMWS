@@ -1,5 +1,5 @@
 <?php
-namespace CPIGroup\Product;
+namespace AmazonMWS\Product;
     /**
      * Copyright 2013 CPI Group, LLC
      *

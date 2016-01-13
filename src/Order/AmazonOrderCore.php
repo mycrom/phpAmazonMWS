@@ -1,5 +1,5 @@
 <?php
-namespace CPIGroup\Order;
+namespace AmazonMWS\Order;
 
 /**
  * Copyright 2013 CPI Group, LLC
@@ -17,7 +17,7 @@ namespace CPIGroup\Order;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-use CPIGroup\AmazonCore;
+use AmazonMWS\AmazonCore;
 
 /**
  * Core class for Amazon Orders API.

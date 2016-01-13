@@ -1,5 +1,5 @@
 <?php
-namespace CPIGroup\Feed;
+namespace AmazonMWS\Feed;
     /**
      * Copyright 2013 CPI Group, LLC
      *

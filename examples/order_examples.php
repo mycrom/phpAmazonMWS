@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // include classes
-use CPIGroup\Order\AmazonOrderList;
+use AmazonMWS\Order\AmazonOrderList;
 
 /*
  * This script retrieves a list of orders from the store "myStore" and displays various bits of their info.

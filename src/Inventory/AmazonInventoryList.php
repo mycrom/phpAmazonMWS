@@ -1,5 +1,5 @@
 <?php
-namespace CPIGroup\Inventory;
+namespace AmazonMWS\Inventory;
     /**
      * Copyright 2013 CPI Group, LLC
      *

@@ -2,9 +2,9 @@
 // autoload
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CPIGroup\Feed\AmazonFeed;
-use CPIGroup\Feed\AmazonFeedList;
-use CPIGroup\Feed\AmazonFeedResult;
+use AmazonMWS\Feed\AmazonFeed;
+use AmazonMWS\Feed\AmazonFeedList;
+use AmazonMWS\Feed\AmazonFeedResult;
 
 /*
  * This script retrieves a list of active feeds for the store "myStore" and display info on them.
