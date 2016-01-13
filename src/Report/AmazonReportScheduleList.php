@@ -51,7 +51,7 @@ class AmazonReportScheduleList extends AmazonReportsCore implements \Iterator
     public function __construct($config,$mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if (isset($THROTTLE_LIMIT_REPORTSCHEDULE)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTSCHEDULE;
@@ -184,7 +184,7 @@ class AmazonReportScheduleList extends AmazonReportsCore implements \Iterator
      */
     protected function prepareToken()
     {
-        include($this->env);
+        include_once($this->env);
         if ($this->tokenFlag && $this->tokenUseFlag) {
             $this->options['Action'] = 'GetReportScheduleListByNextToken';
             if (isset($THROTTLE_LIMIT_REPORTTOKEN)) {
@@ -278,7 +278,7 @@ class AmazonReportScheduleList extends AmazonReportsCore implements \Iterator
      */
     protected function prepareCount()
     {
-        include($this->env);
+        include_once($this->env);
         $this->options['Action'] = 'GetReportScheduleCount';
         if (isset($THROTTLE_LIMIT_REPORTSCHEDULE)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTSCHEDULE;

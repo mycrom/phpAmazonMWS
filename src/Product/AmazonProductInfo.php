@@ -219,7 +219,7 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     protected function prepareCompetitive()
     {
-        include($this->env);
+        include_once($this->env);
         if (isset($THROTTLE_TIME_PRODUCTPRICE)) {
             $this->throttleTime = $THROTTLE_TIME_PRODUCTPRICE;
         }
@@ -280,7 +280,7 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     protected function prepareLowest()
     {
-        include($this->env);
+        include_once($this->env);
         if (isset($THROTTLE_TIME_PRODUCTPRICE)) {
             $this->throttleTime = $THROTTLE_TIME_PRODUCTPRICE;
         }
@@ -341,7 +341,7 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     protected function prepareMyPrice()
     {
-        include($this->env);
+        include_once($this->env);
         if (isset($THROTTLE_TIME_PRODUCTPRICE)) {
             $this->throttleTime = $THROTTLE_TIME_PRODUCTPRICE;
         }
@@ -403,7 +403,7 @@ class AmazonProductInfo extends AmazonProductsCore
      */
     protected function prepareCategories()
     {
-        include($this->env);
+        include_once($this->env);
         if (isset($THROTTLE_TIME_PRODUCTLIST)) {
             $this->throttleTime = $THROTTLE_TIME_PRODUCTLIST;
         }

@@ -47,17 +47,11 @@ abstract class AmazonProductsCore extends AmazonCore
     public function __construct($config,$mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if (isset($AMAZON_VERSION_PRODUCTS)) {
             $this->urlbranch = 'Products/' . $AMAZON_VERSION_PRODUCTS;
             $this->options['Version'] = $AMAZON_VERSION_PRODUCTS;
-        }
-
-        if (array_key_exists('marketplaceId', $this->config)) {
-            $this->options['MarketplaceId'] = $this->config['marketplaceId'];
-        } else {
-            $this->log("Marketplace ID is missing", 'Urgent');
         }
 
         if (isset($THROTTLE_LIMIT_PRODUCT)) {

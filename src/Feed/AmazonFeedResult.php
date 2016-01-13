@@ -48,7 +48,7 @@ class AmazonFeedResult extends AmazonFeedsCore
     public function __construct($config, $id = null, $mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if ($id) {
             $this->options['FeedSubmissionId'] = $id;

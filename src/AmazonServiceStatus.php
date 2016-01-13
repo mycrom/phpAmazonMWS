@@ -50,7 +50,7 @@ class AmazonServiceStatus extends AmazonCore
     public function __construct($config, $service = null, $mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if ($service) {
             $this->setService($service);
@@ -87,7 +87,7 @@ class AmazonServiceStatus extends AmazonCore
     public function setService($s)
     {
         if (file_exists($this->env)) {
-            include($this->env);
+            include_once($this->env);
         } else {
             return false;
         }

@@ -44,7 +44,7 @@ abstract class AmazonOrderCore extends AmazonCore
     public function __construct($config,$mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if (isset($AMAZON_VERSION_ORDERS)) {
             $this->urlbranch = 'Orders/' . $AMAZON_VERSION_ORDERS;

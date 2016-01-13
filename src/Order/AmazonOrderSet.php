@@ -51,7 +51,7 @@ class AmazonOrderSet extends AmazonOrderCore implements \Iterator
     {
         parent::__construct($config,$mock, $m);
         $this->i = 0;
-        include($this->env);
+        include_once($this->env);
 
         if ($o) {
             $this->setOrderIds($o);

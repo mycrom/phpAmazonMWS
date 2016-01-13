@@ -46,7 +46,7 @@ class AmazonProductSearch extends AmazonProductsCore
     public function __construct($config, $q = null, $mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if ($q) {
             $this->setQuery($q);

@@ -44,7 +44,7 @@ abstract class AmazonOutboundCore extends AmazonCore
     public function __construct($config,$mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if (isset($AMAZON_VERSION_OUTBOUND)) {
             $this->urlbranch = 'FulfillmentOutboundShipment/' . $AMAZON_VERSION_OUTBOUND;

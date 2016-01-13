@@ -19,6 +19,8 @@ namespace AmazonMWS;
 
 abstract class AmazonCore
 {
+	const AMAZON_VERSION_PRODUCTS = '2011-10-01';
+	
     protected $urlbase;
     protected $urlbranch;
     protected $throttleLimit;
@@ -38,32 +40,58 @@ abstract class AmazonCore
 
     protected function __construct($config = [], $mock = false, $m = null)
     {
+		$this->env = __DIR__ . '/../environment.php';
+		
+		if (!isset($config)) {
+			return;
+		}
+		
 		$this->config = $config;
         $this->setMock($mock, $m);
 		
         if (array_key_exists('merchantId', $this->config)) {
             $this->options['SellerId'] = $this->config['merchantId'];
-        } else {
-            $this->log('Merchant ID is missing!', 'Warning');
-        }
+        } 
+		
+        if (array_key_exists('marketplaceId', $this->config)) {
+            $this->options['MarketplaceId'] = $this->config['marketplaceId'];
+        } 
+		
+        if (array_key_exists('mwsAuthToken', $this->config)) {
+            $this->options['MWSAuthToken'] = $this->config['mwsAuthToken'];
+        } 
+		
         if (array_key_exists('keyId', $this->config)) {
             $this->options['AWSAccessKeyId'] = $this->config['keyId'];
         } else {
             $this->log('Access Key ID is missing!', 'Warning');
         }
+		
         if (!array_key_exists('secretKey', $this->config)) {
             $this->log('Secret Key is missing!', 'Warning');
         }
+		
         if (!empty($this->config['serviceUrl'])) {
             $this->urlbase = $this->config['serviceUrl'];
         } else {
         	$this->urlbase = 'https://mws.amazonservices.com/';
         }
 
-        $this->env = __DIR__ . '/../environment.php';
         $this->options['SignatureVersion'] = 2;
         $this->options['SignatureMethod'] = 'HmacSHA256';
     }
+	
+	public function setMerchantId($merchantId = null) {
+		$this->options['SellerId'] = $merchantId;
+	}
+	
+	public function setMarketplaceId($marketplaceId = null) {
+		$this->options['MarketplaceId'] = $marketplaceId;
+	}
+	
+	public function setMWSAuthToken($mwsAuthToken = null) {
+		$this->options['MWSAuthToken'] = $mwsAuthToken;
+	}
 
     protected function log($msg, $level = 'Info')
     {

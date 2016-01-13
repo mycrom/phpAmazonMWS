@@ -44,7 +44,7 @@ class AmazonReportRequest extends AmazonReportsCore
     public function __construct($config,$mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         $this->options['Action'] = 'RequestReport';
 

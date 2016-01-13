@@ -49,7 +49,7 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
     public function __construct($config,$mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if (isset($THROTTLE_LIMIT_REPORTLIST)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTLIST;
@@ -289,7 +289,7 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
      */
     protected function prepareToken()
     {
-        include($this->env);
+        include_once($this->env);
         if ($this->tokenFlag && $this->tokenUseFlag) {
             $this->options['Action'] = 'GetReportListByNextToken';
             if (isset($THROTTLE_LIMIT_REPORTTOKEN)) {
@@ -400,7 +400,7 @@ class AmazonReportList extends AmazonReportsCore implements \Iterator
      */
     protected function prepareCount()
     {
-        include($this->env);
+        include_once($this->env);
         $this->options['Action'] = 'GetReportCount';
         if (isset($THROTTLE_LIMIT_REPORTREQUESTLIST)) {
             $this->throttleLimit = $THROTTLE_LIMIT_REPORTREQUESTLIST;

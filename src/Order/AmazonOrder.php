@@ -48,7 +48,7 @@ class AmazonOrder extends AmazonOrderCore
     public function __construct($config, $id = null, $data = null, $mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if ($id) {
             $this->setOrderId($id);

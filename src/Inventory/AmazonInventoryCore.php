@@ -44,7 +44,7 @@ abstract class AmazonInventoryCore extends AmazonCore
     public function __construct($config,$mock = false, $m = null)
     {
         parent::__construct($config,$mock, $m);
-        include($this->env);
+        include_once($this->env);
 
         if (isset($AMAZON_VERSION_INVENTORY)) {
             $this->urlbranch = 'FulfillmentInventory/' . $AMAZON_VERSION_INVENTORY;

@@ -48,7 +48,7 @@ class AmazonFeed extends AmazonFeedsCore
     {
         parent::__construct($config,$mock, $m);
 
-        include($this->env);
+        include_once($this->env);
 
         $this->options['Action'] = 'SubmitFeed';
 
@@ -222,7 +222,7 @@ class AmazonFeed extends AmazonFeedsCore
         } else if ($s == 'false' || (!$s && is_bool($s))) {
             $this->log("Purge mode deactivated.");
             $this->options['PurgeAndReplace'] = 'false';
-            include($this->env);
+            include_once($this->env);
             if (isset($THROTTLE_TIME_FEEDSUBMIT)) {
                 $this->throttleTime = $THROTTLE_TIME_FEEDSUBMIT;
             }
