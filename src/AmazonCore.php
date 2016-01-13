@@ -114,7 +114,7 @@ abstract class AmazonCore
                 $function = $backtrace[0]['function'];
             }
 
-			error_log("[$level][" . date("Y/m/d H:i:s") . " $name@$ip $fileName:$line $function] " . $msg);
+			error_log("[$level][" . date("Y/m/d H:i:s") . " $fileName:$line $function] " . $msg);
         } else {
             return false;
         }
