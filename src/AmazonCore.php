@@ -17,79 +17,6 @@ namespace AmazonMWS;
      * limitations under the License.
      */
 
-/**
- * The main core of the Amazon class.
- *
- * The Amazon classes are divided up into groups, with each group
- * having its own abstract core class. This core is the class that
- * each of the other cores extend from. It contains a number of
- * methods shared by all cores, such as logging, throttling, and
- * signature generation.
- *
- * The general flow for using a class in this library is as follows:
- * <ol>
- * <li>Create an object (or objects) of the desired type.</li>
- * <li>Set the request parameters using "set_____" functions.
- * Some classes allow you to set parameters when constructing the object.
- * Some classes don't need any parameters, and a few don't have any at all.</li>
- * <li>Send the request to Amazon using the class's unique function. (Usually "fetch___")
- * If not enough parameters have been set, the request will not go through.</li>
- * <li>Retrieve the data received with "get____" functions. Some classes can
- * be iterated through using foreach.</li>
- * <li>Repeat. Please note that performing Amazon actions sometimes alters or
- * removes parameters previously set, so it is recommended that you set all of the
- * desired parameters again before making a second action, or better yet, use a new object.
- * The exception to this is follow-up actions, which rely on the data previously
- * received from Amazon and do not require any parameters.</li>
- * </ol>
- * While there are a lot of functions, they all share one of the structures listed below.
- * Once you know how to use one class, you should be able to use the other classes.
- * <ul>
- * <li><b>Constructor</b> - Some classes let you pass an extra value when creating the class
- * in order to automatically set one of the parameters necessary for the class. Other
- * than that, all of the classes are created the same way and have the same options
- * for setting mock mode and other testing features.</li>
- * <li><b>Set an Option Flag</b> - These are functions for toggling a setting that only has an
- * On or Off setting. The single value they take is usually a boolean (or sometimes
- * a string with the words "true" or "false") and the value is often optional. If
- * no value is passed, the setting will be enabled. Passing a value of false is
- * the only way to deactivate the option afterwards.</li>
- * <li><b>Set Single Value</b> - These are functions meant for setting a parameter that
- * uses only a single value. For example, setting a shipment ID to
- * receive the items for. They typically require only a single parameter, usually a string.
- * Occasionally, the function will require a number, or a specific string value. In
- * these cases, the function will not set the parameter if the value is incorrect.</li>
- * <li><b>Set Multiple Values</b> - These are functions for setting options that can take
- * a list of values. These functions can take either an array of values, or a single
- * string. If this function is used a second time, the first list of values will be
- * completely removed and replaced with the new values.</li>
- * <li><b>Set Time Options</b> - A number of classes have functions for setting time limit
- * options. This is typically a pair of time points, but depending on the class, it
- * may only need one. All values passed to these functions are passed through <i>strtotime</i>
- * before being used, so a wide variety of values is accepted. For more information on
- * what is acceptible, see the documentation for <i>strtotime</i>.</li>
- * <li><b>Amazon Actions</b> - These are functions with names like "fetch____" or "cancel___",
- * and they are what send the request to Amazon. No parameter is ever needed, and the output
- * is always only to indicate if the action was successful.</li>
- * <li><b>Retrieve Value from a Single Object</b> - These functions are for retrieving
- * data sent by Amazon from a class that is not dedicated to a list of information.
- * No parameters are needed.</li>
- * <li><b>Retrieve Value from a List Object</b> - These functions are also for retrieving data,
- * but from classes that contain a list of different information sets. These functions can
- * take an integer for a list index, which then returns the value from the specified entry.
- * If no index is given, it defaults to returning the first entry in the list. In the case
- * of complex lists, sometimes a second index may be used.</li>
- * <li><b>Retrieve a List Entry</b> - These functions return either part of or all of
- * a class object's data list. An optional index can be passed to return a particular
- * data set. If no index is given, the entire list of data is returned. Keep in mind
- * that the arrays returned by these functions are usually pretty large.</li>
- * <li><b>Follow-Up Actions</b> - There are only a few of these functions, and are mostly
- * "fetchItems" functions for lists of orders or shipments. These functions send a request
- * to Amazon for every entry in the object's data list. Please note that these functions
- * will generally take a while to perform and will return a lot of data. These are the
- * only non-"get" functions that will return the information.</li>
- * </ul>
- */
 abstract class AmazonCore
 {
     protected $urlbase;
@@ -101,7 +28,7 @@ abstract class AmazonCore
     protected $throttleStop = false;
     protected $storeName;
     protected $options;
-    protected $config;
+    protected $config = [];
     protected $mockMode = false;
     protected $mockFiles;
     protected $mockIndex = 0;
@@ -109,208 +36,44 @@ abstract class AmazonCore
     protected $env;
     protected $rawResponses = array();
 
-    /**
-     * AmazonCore constructor sets up key information used in all Amazon requests.
-     *
-     * This constructor is called when initializing all objects in this library.
-     * The parameters are passed by the child objects' constructors.
-     * @param string $s [optional] <p>Name for the store you want to use as seen in the config file.
-     * If there is only one store defined in the config file, this parameter is not necessary.
-     * If there is more than one store and this is not set to a valid name, none of these objects will work.</p>
-     * @param boolean $mock [optional] <p>This is a flag for enabling Mock Mode.
-     * When this is set to <b>TRUE</b>, the object will fetch responses from
-     * files you specify instead of sending the requests to Amazon.
-     * The log will indicate whether mock mode is on or off each time
-     * an object is initialized. This defaults to <b>FALSE</b>.</p>
-     * @param array|string $m [optional] <p>The files (or file) to use in Mock Mode.
-     * When Mock Mode is enabled, the object will retrieve one of these files
-     * from the list to use as a response. See <i>setMock</i> for more information.</p>
-     * @param string $config [optional] <p>An alternate config file to set. Used for testing.</p>
-     */
-    protected function __construct($s = null, $mock = false, $m = null, $config = null)
+    protected function __construct($config = [], $mock = false, $m = null)
     {
-        if (is_null($config)) {
-            $config = __DIR__ . '/../amazon-config.php';
-        }
-
-        $this->setConfig($config);
-        $this->setStore($s);
+		$this->config = $config;
         $this->setMock($mock, $m);
+		
+        if (array_key_exists('merchantId', $this->config)) {
+            $this->options['SellerId'] = $this->config['merchantId'];
+        } else {
+            $this->log('Merchant ID is missing!', 'Warning');
+        }
+        if (array_key_exists('keyId', $this->config)) {
+            $this->options['AWSAccessKeyId'] = $this->config['keyId'];
+        } else {
+            $this->log('Access Key ID is missing!', 'Warning');
+        }
+        if (!array_key_exists('secretKey', $this->config)) {
+            $this->log('Secret Key is missing!', 'Warning');
+        }
+        if (!empty($this->config['serviceUrl'])) {
+            $this->urlbase = $this->config['serviceUrl'];
+        } else {
+        	$this->urlbase = 'https://mws.amazonservices.com/';
+        }
 
         $this->env = __DIR__ . '/../environment.php';
         $this->options['SignatureVersion'] = 2;
         $this->options['SignatureMethod'] = 'HmacSHA256';
     }
 
-    /**
-     * Set the config file.
-     *
-     * This method can be used to change the config file after the object has
-     * been initiated. The file will not be set if it cannot be found or read.
-     * This is useful for testing, in cases where you want to use a different file.
-     * @param string $path <p>The path to the config file.</p>
-     * @throws \Exception If the file cannot be found or read.
-     */
-    public function setConfig($path)
-    {
-        if (!file_exists($path) || !is_readable($path)) {
-            throw new \Exception("Config file does not exist or cannot be read! ($path)");
-        }
-
-        /**
-         * @var array $store
-         * @var string $AMAZON_SERVICE_URL
-         * @var string $logpath
-         * @var string $logfunction
-         * @var bool $muteLog
-         */
-        include($path);
-
-        $this->config = $path;
-        $this->setLogPath($logpath);
-        if (isset($AMAZON_SERVICE_URL)) {
-            $this->urlbase = $AMAZON_SERVICE_URL;
-        }
-    }
-
-    /**
-     * Set the log file path.
-     *
-     * Use this method to change the log file used. This method is called
-     * each time the config file is changed.
-     * @param string $path <p>The path to the log file.</p>
-     * @throws \Exception If the file cannot be found or read.
-     */
-    public function setLogPath($path)
-    {
-        if (file_exists($path) && is_readable($path)) {
-            $this->logpath = $path;
-        } else {
-            throw new \Exception("Log file does not exist or cannot be read! ($path)");
-        }
-
-    }
-
-    /**
-     * Sets the store values.
-     *
-     * This method sets a number of key values from the config file. These values
-     * include your Merchant ID, Access Key ID, and Secret Key, and are critical
-     * for making requests with Amazon. If the store cannot be found in the
-     * config file, or if any of the key values are missing,
-     * the incident will be logged.
-     * @param string $s [optional] <p>The store name to look for.
-     * This parameter is not required if there is only one store defined in the config file.</p>
-     * @throws \Exception If the file can't be found.
-     */
-    public function setStore($s = null)
-    {
-        if (!file_exists($this->config)) {
-            throw new \Exception("Config file does not exist!");
-        }
-
-        /**
-         * @var array $store
-         * @var string $AMAZON_SERVICE_URL
-         * @var string $logpath
-         * @var string $logfunction
-         * @var bool $muteLog
-         */
-        include($this->config);
-
-        if (empty($store) || !is_array($store)) {
-            throw new \Exception('No stores defined!');
-        }
-
-        if (!isset($s) && count($store) === 1) {
-            $s = key($store);
-        }
-
-        if (array_key_exists($s, $store)) {
-            $this->storeName = $s;
-            if (array_key_exists('merchantId', $store[$s])) {
-                $this->options['SellerId'] = $store[$s]['merchantId'];
-            } else {
-                $this->log('Merchant ID is missing!', 'Warning');
-            }
-            if (array_key_exists('keyId', $store[$s])) {
-                $this->options['AWSAccessKeyId'] = $store[$s]['keyId'];
-            } else {
-                $this->log('Access Key ID is missing!', 'Warning');
-            }
-            if (!array_key_exists('secretKey', $store[$s])) {
-                $this->log('Secret Key is missing!', 'Warning');
-            }
-            if (!empty($store[$s]['serviceUrl'])) {
-                $this->urlbase = $store[$s]['serviceUrl'];
-            }
-
-        } else {
-            $this->log('Store $s does not exist!', 'Warning');
-        }
-    }
-
-    /**
-     * Writes a message to the log.
-     *
-     * This method adds a message line to the log file defined by the config.
-     * This includes the priority level, user IP, and a backtrace of the call.
-     * @param string $msg <p>The message to write to the log.</p>
-     * @param string $level [optional] <p>The priority level of the message.
-     * This is merely for the benefit of the user and does not affect how
-     * the code runs. The values used in this library are "Info", "Warning",
-     * "Urgent", and "Throttle".</p>
-     * @return boolean <b>FALSE</b> if the message is empty, NULL if logging is muted
-     * @throws \Exception If the file can't be written to.
-     */
     protected function log($msg, $level = 'Info')
     {
         if ($msg != false) {
-            if (!file_exists($this->config)) {
-                throw new \Exception("Config file does not exist!");
-            }
-
-            /**
-             * @var array $store
-             * @var string $AMAZON_SERVICE_URL
-             * @var string $logpath
-             * @var string $logfunction
-             * @var bool $muteLog
-             */
-            include($this->config);
-
             $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
-            if (isset($logfunction) && $logfunction != '' && function_exists($logfunction)) {
-                switch ($level) {
-                    case('Info'):
-                        $loglevel = LOG_INFO;
-                        break;
-                    case('Throttle'):
-                        $loglevel = LOG_INFO;
-                        break;
-                    case('Warning'):
-                        $loglevel = LOG_NOTICE;
-                        break;
-                    case('Urgent'):
-                        $loglevel = LOG_ERR;
-                        break;
-                    default:
-                        $loglevel = LOG_INFO;
-                }
-                call_user_func($logfunction, $msg, $loglevel);
-            }
-
-            if (isset($muteLog) && $muteLog == true) {
+            if (!isset($this->config['debug'])) {
                 return;
             }
-
-            if (isset($userName) && $userName != '') {
-                $name = $userName;
-            } else {
-                $name = 'guest';
-            }
-
+			
             if (isset($backtrace) && isset($backtrace[1]) && isset($backtrace[1]['file']) && isset($backtrace[1]['line']) && isset($backtrace[1]['function'])) {
                 $fileName = basename($backtrace[1]['file']);
                 $file = $backtrace[1]['file'];
@@ -322,49 +85,13 @@ abstract class AmazonCore
                 $line = $backtrace[0]['line'];
                 $function = $backtrace[0]['function'];
             }
-            if (isset($_SERVER['REMOTE_ADDR'])) {
-                $ip = $_SERVER['REMOTE_ADDR'];
-                if ($ip == '127.0.0.1') $ip = 'local';//save some char
-            } else {
-                $ip = 'cli';
-            }
-            if (!file_exists($this->logpath)) {
-                //attempt to create the file if it does not exist
-                file_put_contents($this->logpath, "This is the Amazon log, for Amazon classes to use.\n");
-            }
-            if (file_exists($this->logpath) && is_writable($this->logpath)) {
-                $str = "[$level][" . date("Y/m/d H:i:s") . " $name@$ip $fileName:$line $function] " . $msg;
-                $fd = fopen($this->logpath, "a+");
-                fwrite($fd, $str . "\r\n");
-                fclose($fd);
-            } else {
-                throw new \Exception('Error! Cannot write to log! (' . $this->logpath . ')');
-            }
+
+			error_log("[$level][" . date("Y/m/d H:i:s") . " $name@$ip $fileName:$line $function] " . $msg);
         } else {
             return false;
         }
     }
 
-    /**
-     * Enables or disables Mock Mode for the object.
-     *
-     * Use this method when you want to test your object without sending
-     * actual requests to Amazon. When Mock Mode is enabled, responses are
-     * pulled from files you specify instead of sending the request.
-     * Be careful, as this means that the parameters you send will not
-     * necessarily match the response you get back. The files are pulled in order
-     * of the list, looping back to the first file after the last file is used.
-     * The log records every time a file is set or used, or if the file is missing.
-     * This method is also used to set response codes used by certain functions.
-     * Mock Mode is particularly useful when you need
-     * to test functions such as canceling orders or adding new products.
-     * @param boolean $b [optional] <p>When set to <b>TRUE</b>, Mock Mode is
-     * enabled for the object. Defaults to <b>TRUE</b>.</p>
-     * @param array|string|integer $files [optional] <p>The list of files (or single file)
-     * to be used with Mock Mode. If a single string is given, this method will
-     * put it into an array. Integers can also be given, for use in <i>fetchMockResponse</i>.
-     * These numbers should only be response codes, such as <b>200</b> or <b>404</b>.</p>
-     */
     public function setMock($b = true, $files = null)
     {
         if (is_bool($b)) {
@@ -634,21 +361,8 @@ abstract class AmazonCore
      */
     protected function genQuery()
     {
-        if (!file_exists($this->config)) {
-            throw new \Exception("Config file does not exist!");
-        }
-
-        /**
-         * @var array $store
-         * @var string $AMAZON_SERVICE_URL
-         * @var string $logpath
-         * @var string $logfunction
-         * @var bool $muteLog
-         */
-        include($this->config);
-
-        if (array_key_exists($this->storeName, $store) && array_key_exists('secretKey', $store[$this->storeName])) {
-            $secretKey = $store[$this->storeName]['secretKey'];
+        if (array_key_exists('secretKey', $this->config)) {
+            $secretKey = $this->config['secretKey'];
         } else {
             throw new \Exception("Secret Key is missing!");
         }

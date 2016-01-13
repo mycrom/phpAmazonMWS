@@ -47,18 +47,13 @@ class AmazonOrderList extends AmazonOrderCore implements \Iterator
      * @param string $config [optional] <p>An alternate config file to set. Used for testing.</p>
      * @throws \Exception
      */
-    public function __construct($s = null, $mock = false, $m = null, $config = null)
+    public function __construct($config,$mock = false, $m = null)
     {
-        parent::__construct($s, $mock, $m, $config);
+        parent::__construct($config,$mock, $m);
         include($this->env);
-        if (file_exists($this->config)) {
-            include($this->config);
-        } else {
-            throw new \Exception('Config file does not exist!');
-        }
 
-        if (isset($store[$this->storeName]) && array_key_exists('marketplaceId', $store[$this->storeName])) {
-            $this->options['MarketplaceId.Id.1'] = $store[$this->storeName]['marketplaceId'];
+        if (array_key_exists('marketplaceId', $this->config)) {
+            $this->options['MarketplaceId.Id.1'] = $this->config['marketplaceId'];
         } else {
             $this->log("Marketplace ID is missing", 'Urgent');
         }
