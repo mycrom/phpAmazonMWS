@@ -209,6 +209,26 @@ abstract class AmazonCore
         }
     }
 
+    public function getError($i = NULL)
+    {
+        if (!isset($i)) {
+            $i = count($this->rawResponses) - 1;
+        }
+		
+        if ($i >= 0 && isset($this->rawResponses[$i])) {
+            $r = $this->rawResponses[$i];
+        } else {
+            return true;
+        }
+		
+        if ($r['code'] == 200) {
+            return false;
+        } else {
+            $xml = simplexml_load_string($r['body'])->Error;
+            return $r['code'] . " " . $r['error'] . ": " . $xml->Code . " - " . $xml->Message;
+        }
+    }
+
     /**
      * Gives all response code received from Amazon.
      * @return array list of associative arrays of HTTP response or <b>FALSE</b> if not set yet
